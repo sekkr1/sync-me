@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm --prefix server start",
+    "preinstall": "npm --prefix client install client --only=prod && npm --prefix server install server --only=prod",
     "postinstall": "npm --prefix client run postinstall && npm --prefix server run postinstall"
   },
   "author": "",
