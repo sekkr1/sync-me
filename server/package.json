@@ -2,16 +2,17 @@
   "name": "youtube-sync",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/app.ts",
   "scripts": {
     "build": "npm run tsc",
     "coverage": "npm run test-cov && npm run test-remap",
     "tslint": "tslint ./*.ts ./lib/*.ts",
     "test": "mocha --reporter spec --check-leaks --bail test/",
+    "barrel": "barrelsby --delete -l below",
     "tsc": "tsc --project tsconfig.json",
     "tsc:w": "tsc -w",
     "start": "ts-node -r tsconfig-paths/register src/app.ts",
-    "watch": "nodemon --watch 'src/**/*.ts' --ignore 'node_modules/**/*' --exec npm run start"
+    "watch": "nodemon --ext ts --watch src --exec npm run start"
   },
   "author": "",
   "license": "ISC",

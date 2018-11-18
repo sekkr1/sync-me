@@ -5,8 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "npm --prefix server start",
+    "watch": "concurrently \"npm --prefix client run watch\" \"npm --prefix server run watch\"",
     "postinstall": "npm --prefix client install client --only=prod && npm --prefix server install server --only=prod"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^4.0.1"
+  }
 }
