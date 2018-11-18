@@ -36,18 +36,20 @@ export class RoomsStorage {
         return roomId;
     }
 
-    public async reserveRoom(videoIds: string[]): Promise<string> {
+    public async reserveRoom(videoLinks: string[]): Promise<string> {
         const roomId = this.generateRoom();
         const room = this.getRoom(roomId);
         setTimeout(() => {
             if (room.connected === 0)
                 this.deleteRoom(roomId);
         }, 60000);
-        for (let videoId of videoIds) {
-            const video = await this.youtubeService.createVideo(videoId);
+        for (let videoLink of videoLinks) {
+            const video = await this.youtubeService.createVideo(videoLink);
             if (video)
                 room.playlist.push(video);
         }
+        console.log(videoLinks);
+        console.log(room);
         return roomId;
     }
 }

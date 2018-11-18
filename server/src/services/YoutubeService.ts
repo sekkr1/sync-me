@@ -17,7 +17,17 @@ export class YoutubeService implements OnInit {
         });
     }
 
-    public async createVideo(videoId: string): Promise<Video | void> {
+    public async createVideo(videoLink: string): Promise<Video | void> {
+        let videoId: string;
+        if (videoLink.length === 11)
+            videoId = videoLink;
+        else {
+            const match = videoLink.match(/(\?v=|youtu\.be\/)(.{11})/i);
+            if (match.length === 0)
+                return;
+            videoId = match[2];
+        }
+
         const ytRes = await this.yt.videos.list({
             id: videoId,
             part: 'snippet'
