@@ -10,6 +10,7 @@ import { SinglePageMiddleware, AuthMiddleware } from "@middlewares";
 
 @ServerSettings({
     rootDir: path.resolve(__dirname),
+    domain: 'https://youtube-syncplay.herokuapp.com',
     port: process.env.PORT || 80,
     httpsPort: false,
     secretKey: 'DESIRED_API_KEY',

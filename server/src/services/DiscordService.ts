@@ -7,6 +7,9 @@ export class DiscordService implements OnInit {
 
     private readonly client: Discord.Client;
 
+    @Value('domain')
+    domain: string;
+
     @Value('discord.token')
     token: string;
 
@@ -14,7 +17,9 @@ export class DiscordService implements OnInit {
     prefix: string;
 
     constructor(private roomsStorage: RoomsStorage) {
-        this.client = new Discord.Client();
+        this.client = new Discord.Client({
+            messageCacheMaxSize: 0
+        });
         this.client.on('ready', () => {
             console.log(`Logged in as ${this.client.user.tag}`);
         });
@@ -50,20 +55,27 @@ export class DiscordService implements OnInit {
                     await newSyncList.pin();
                 }
             } else if (command === 'sync') {
-                const pinned = await (msg.channel as Discord.TextChannel).fetchPinnedMessages();
-                const pinnedSyncList = pinned.find((pinMsg: Discord.Message) => pinMsg.author === this.client.user && pinMsg.content.startsWith('**SYNC LIST**\n'));
-                if (!pinnedSyncList)
-                    return;
+                if (args.length === 0) {
+                    const pinned = await (msg.channel as Discord.TextChannel).fetchPinnedMessages();
+                    const pinnedSyncList = pinned.find((pinMsg: Discord.Message) => pinMsg.author === this.client.user && pinMsg.content.startsWith('**SYNC LIST**\n'));
+                    if (!pinnedSyncList)
+                        return;
 
-                const videoIds = pinnedSyncList.content.split('\n').slice(1).map((videoLink: string) => {
-                    if (videoLink.length === 11)
-                        return videoLink;
-                    return videoLink.match(/(\?v=|youtu\.be\/)(.{11})/i)[2];
-                });
+                    const videoIds = pinnedSyncList.content.split('\n').slice(1).map((videoLink: string) => {
+                        if (videoLink.length === 11)
+                            return videoLink;
+                        return videoLink.match(/(\?v=|youtu\.be\/)(.{11})/i)[2];
+                    });
 
-                const roomId = await this.roomsStorage.reserveRoom(videoIds);
-                await (msg.channel as Discord.TextChannel).send(`Your sync is waiting over at https://youtube-syncplay.herokuapp.com/${roomId}`);
-                await pinnedSyncList.delete();
+                    const roomId = await this.roomsStorage.reserveRoom(videoIds);
+                    await (msg.channel as Discord.TextChannel).send(`Your sync is waiting over at ${this.domain}/${roomId}`);
+                    await pinnedSyncList.delete();
+                } else {
+                    const videoLink = args[0];
+                    const videoId = videoLink.match(/(\?v=|youtu\.be\/)(.{11})/i)[2];
+                    const roomId = await this.roomsStorage.reserveRoom([videoId]);
+                    await (msg.channel as Discord.TextChannel).send(`Your sync is waiting over at ${this.domain}/${roomId}`);
+                }
             }
         }
         );
