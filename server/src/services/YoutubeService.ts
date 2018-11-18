@@ -1,16 +1,19 @@
-import { Service } from "@tsed/common";
+import { Service, Value, OnInit } from "@tsed/common";
 import { google, youtube_v3 } from 'googleapis';
 import { Video } from "@shared";
 
 @Service()
-export class YoutubeService {
+export class YoutubeService implements OnInit {
 
-    private readonly yt: youtube_v3.Youtube;
+    private yt: youtube_v3.Youtube;
 
-    constructor() {
+    @Value('googleToken')
+    googleToken: string;
+
+    $onInit() {
         this.yt = google.youtube({
             version: 'v3',
-            auth: 'AIzaSyByzpzk6o8QvbwSzfXXf_LfL7JqdicwIzQ'
+            auth: this.googleToken
         });
     }
 

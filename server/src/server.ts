@@ -10,9 +10,14 @@ import { SinglePageMiddleware, AuthMiddleware } from "@middlewares";
 
 @ServerSettings({
     rootDir: path.resolve(__dirname),
-    port: process.env.PORT || 800,
+    port: process.env.PORT || 80,
     httpsPort: false,
     secretKey: 'DESIRED_API_KEY',
+    discord: {
+        token: 'DISCORD_TOKEN',
+        prefix: '!'
+    },
+    googleToken: 'YOUTUBE_API_TOKEN',
     serveStatic: {
         '/': path.resolve('../client/dist/ngytsync'),
         '/assets': path.resolve('../assets')
