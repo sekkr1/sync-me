@@ -17,9 +17,7 @@ export class DiscordService implements OnInit {
     prefix: string;
 
     constructor(private roomsStorage: RoomsStorage) {
-        this.client = new Discord.Client({
-            messageCacheMaxSize: 0
-        });
+        this.client = new Discord.Client();
         this.client.on('ready', () => {
             console.log(`Logged in as ${this.client.user.tag}`);
         });
