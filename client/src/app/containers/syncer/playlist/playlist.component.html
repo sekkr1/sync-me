@@ -1,0 +1,12 @@
+<mat-list>
+  <mat-list-item class="asd" *ngFor="let video of videos; let i = index" [class.selected]="i === selected">
+    <img src="https://i.ytimg.com/vi/{{video.id}}/default.jpg" />
+    <a href="https://youtu.be/{{video.id}}">{{ video.title }}</a>
+    <button mat-flat-button color="primary" *ngIf="i !== selected" (click)="playVideo(i)">Play</button>
+    <button mat-flat-button color="warn" (click)="removeVideo(i)">Remove</button>
+  </mat-list-item>
+</mat-list>
+<mat-form-field>
+  <input matInput placeholder="Youtube URL or video ID" #newVideo>
+</mat-form-field>
+<button mat-flat-button (click)="addVideo(newVideo.value)">Add</button>

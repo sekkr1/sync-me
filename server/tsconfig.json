@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "lib": [
+      "es2015"
+    ],
+    "types": [
+      "reflect-metadata"
+    ],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "sourceMap": true,
+    "declaration": false,
+    "outDir": "dist",
+    "baseUrl": "src",
+    "paths": {
+      "@services": [
+        "services"
+      ],
+      "@shared": [
+        "../../shared"
+      ],
+      "@middlewares": [
+        "middlewares"
+      ],
+      "@controllers": [
+        "controllers"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
