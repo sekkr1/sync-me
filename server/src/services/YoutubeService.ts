@@ -22,9 +22,10 @@ export class YoutubeService implements OnInit {
         if (videoLink.length === 11)
             videoId = videoLink;
         else {
+            console.log(videoLink);
             const match = videoLink.match(/(\?v=|youtu\.be\/)(.{11})/i);
-            if (match.length === 0)
-                return;
+            console.log(match);
+            if (!match) return;
             videoId = match[2];
         }
 
@@ -32,8 +33,7 @@ export class YoutubeService implements OnInit {
             id: videoId,
             part: 'snippet'
         })
-        if (ytRes.status !== 200 || ytRes.data.items.length === 0)
-            return;
+        if (ytRes.status !== 200 || ytRes.data.items.length === 0) return;
 
         const title = ytRes.data.items[0].snippet.title;
 

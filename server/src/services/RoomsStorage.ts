@@ -45,6 +45,7 @@ export class RoomsStorage {
         }, 60000);
         for (let videoLink of videoLinks) {
             const video = await this.youtubeService.createVideo(videoLink);
+            console.log(video);
             if (video)
                 room.playlist.push(video);
         }
