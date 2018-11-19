@@ -46,7 +46,11 @@ export class MySocketService {
         if (session.get('room').connected > 0)
             this.nsp.to(session.get('roomId')).emit('leave');
         else
-            this.roomsStorage.deleteRoom(session.get('roomId'));
+            setTimeout(() => {
+                if (session.get('room').connected === 0)
+                    this.roomsStorage.deleteRoom(session.get('roomId'));
+            }, 60000);
+
     }
 
     @Input('play video')
