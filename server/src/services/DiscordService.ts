@@ -2,14 +2,12 @@ import { Service, Value, OnInit } from "@tsed/common";
 import * as Discord from 'discord.js';
 import { RoomsStorage } from "./RoomsStorage";
 import { $log } from 'ts-log-debug';
+import { YoutubeService } from "./YoutubeService";
 
 @Service()
 export class DiscordService implements OnInit {
 
     private readonly client: Discord.Client;
-
-    @Value('domain')
-    domain: string;
 
     @Value('discord.token')
     token: string;
@@ -17,41 +15,53 @@ export class DiscordService implements OnInit {
     @Value('discord.prefix')
     prefix: string;
 
-    constructor(private roomsStorage: RoomsStorage) {
+    constructor(private roomsStorage: RoomsStorage,
+        private youtubeService: YoutubeService) {
         this.client = new Discord.Client({
             messageCacheMaxSize: 1
         });
         this.client.on('ready', () => {
             $log.info(`Discord server started... Logged in as ${this.client.user.tag}`);
         });
-        this.client.on('message', async (msg: Discord.Message) => {
-            let slice: number;
-            if (msg.content.startsWith(`<@${this.client.user.id}>`))
-                slice = `<@${this.client.user.id}>`.length;
-            else if (msg.content.startsWith(`<@!${this.client.user.id}>`))
-                slice = `<@!${this.client.user.id}>`.length;
-            else if (msg.content.startsWith(this.prefix) && !msg.guild)
-                slice = this.prefix.length;
-            else return;
-
-            console.log('command');
-            const args = msg.content.slice(slice).trim().split(/ +/);
-            const command = args.shift().toLowerCase();
-            const channel = msg.channel as Discord.TextChannel;
-            console.log(args);
-            switch (command) {
-                case 'queue':
-                    if (args.length === 0) return;
-                    return this.queueCommand(channel, args[0]);
-                case 'sync':
-                    return this.syncCommand(channel, args[0]);
-            }
-        });
+        this.client.on('message', (msg) => this.commandHandler(msg));
     }
 
-    async queueCommand(channel: Discord.TextChannel, videoLink: string) {
-        const pinnedSyncList = await this.getSyncList(channel);
+    async commandHandler(msg: Discord.Message) {
+        let slice: number;
+        if (msg.content.startsWith(`<@${this.client.user.id}>`))
+            slice = `<@${this.client.user.id}>`.length;
+        else if (msg.content.startsWith(`<@!${this.client.user.id}>`))
+            slice = `<@!${this.client.user.id}>`.length;
+        else if (msg.content.startsWith(this.prefix) && !msg.guild)
+            slice = this.prefix.length;
+        else return;
 
+        const args = msg.content.slice(slice).trim().split(/ +/);
+        const command = args.shift().toLowerCase();
+        const channel = msg.channel as Discord.TextChannel;
+        $log.info(`Recieved command "${command}" with arguments [${args.join(', ')}]`)
+        switch (command) {
+            case 'queue':
+                if (args.length === 0) return;
+                return this.queueCommand(channel, args.join(' '));
+            case 'sync':
+                return this.syncCommand(channel, args.join(' '));
+        }
+    }
+
+    async queueCommand(channel: Discord.TextChannel, video: string) {
+        const pinnedSyncList = await this.getSyncList(channel);
+        let videoLink: string;
+        const match = video.match(/(\?v=|youtu\.be\/)(.{11})/i)
+        if (match)
+            videoLink = match[2];
+        else {
+            const search = await this.youtubeService.createVideo(video, true);
+            if (search) {
+                videoLink = `https://youtu.be/${search.id}`;
+                await channel.send(`Queueing **${search.title}...**`);
+            }
+        }
         if (pinnedSyncList)
             await pinnedSyncList.edit(`${pinnedSyncList.content}\n<${videoLink}>`);
         else {
@@ -60,10 +70,20 @@ export class DiscordService implements OnInit {
         }
     }
 
-    async syncCommand(channel: Discord.TextChannel, videoLink?: string) {
+    async syncCommand(channel: Discord.TextChannel, video?: string) {
         let videoLinks: string[];
-        if (videoLink)
-            videoLinks = [videoLink];
+        if (video) {
+            const match = video.match(/(\?v=|youtu\.be\/)(.{11})/i)
+            if (match)
+                videoLinks = [match[2]];
+            else {
+                const search = await this.youtubeService.createVideo(video, true);
+                if (search) {
+                    videoLinks = [`https://youtu.be/${search.id}`];
+                    await channel.send(`Queueing **${search.title}**...`);
+                }
+            }
+        }
         else {
             const pinnedSyncList = await this.getSyncList(channel);
 
@@ -74,7 +94,7 @@ export class DiscordService implements OnInit {
         }
 
         const roomId = await this.roomsStorage.reserveRoom(videoLinks);
-        await channel.send(`Your sync is waiting over at ${this.domain}/${roomId}`);
+        await channel.send(`Your sync is waiting over at ${process.env.DOMAIN}/${roomId}`);
     }
 
     async getSyncList(channel: Discord.TextChannel): Promise<Discord.Message | void> {

@@ -6,13 +6,18 @@ import * as compression from 'compression';
 import * as methodOverride from 'method-override';
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
+import * as fs from 'fs'
 import { SinglePageMiddleware, AuthMiddleware } from "@middlewares";
 
 @ServerSettings({
     rootDir: path.resolve(__dirname),
     domain: 'https://youtube-syncplay.herokuapp.com',
     port: process.env.PORT || 80,
-    httpsPort: false,
+    httpsPort: 443,
+    httpsOptions: {
+        key: fs.readFileSync(path.resolve(__dirname, '../key.pem')),
+        cert: fs.readFileSync(path.resolve(__dirname, '../cert.pem'))
+    },
     secretKey: 'DESIRED_API_KEY',
     discord: {
         token: 'DISCORD_TOKEN',
