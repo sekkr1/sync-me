@@ -24,14 +24,7 @@ export class PlaylistComponent {
   videoAdd = new EventEmitter<string>();
 
   addVideo(newVideo: string) {
-    let newVideoId = newVideo;
-    if (newVideo.length !== 11) {
-      const match = newVideo.match(/(\?v=|youtu\.be\/)(.{11})/i);
-      if (!match)
-        return;
-      newVideoId = match[2];
-    }
-    this.videoAdd.emit(newVideoId);
+    this.videoAdd.emit(newVideo);
   }
 
   removeVideo(id: number) {

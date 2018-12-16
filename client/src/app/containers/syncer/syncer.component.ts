@@ -26,7 +26,7 @@ export class SyncerComponent {
     router: Router,
     location: Location) {
 
-    const socketUrl = isDevMode() ? 'http://localhost' : undefined;
+    const socketUrl = isDevMode() ? 'http://localhost:3000' : undefined;
     if (activatedRoute.snapshot.paramMap.get('id'))
       this.socket = io(socketUrl, { query: `room=${activatedRoute.snapshot.paramMap.get('id')}` });
     else

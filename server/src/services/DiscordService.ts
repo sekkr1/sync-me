@@ -53,15 +53,10 @@ export class DiscordService implements OnInit {
     async queueCommand(channel: Discord.TextChannel, video: string) {
         const pinnedSyncList = await this.getSyncList(channel);
         let videoLink: string;
-        const match = video.match(/(\?v=|youtu\.be\/)(.{11})/i)
-        if (match)
-            videoLink = match[2];
-        else {
-            const search = await this.youtubeService.createVideo(video, true);
-            if (search) {
-                videoLink = `https://youtu.be/${search.id}`;
-                await channel.send(`Queueing **${search.title}...**`);
-            }
+        const search = await this.youtubeService.createVideo(video, true);
+        if (search) {
+            videoLink = `https://youtu.be/${search.id}`;
+            await channel.send(`Queueing **${search.title}...**`);
         }
         if (pinnedSyncList)
             await pinnedSyncList.edit(`${pinnedSyncList.content}\n<${videoLink}>`);
@@ -74,16 +69,9 @@ export class DiscordService implements OnInit {
     async syncCommand(channel: Discord.TextChannel, video?: string) {
         let videoLinks: string[];
         if (video) {
-            const match = video.match(/(\?v=|youtu\.be\/)(.{11})/i)
-            if (match)
-                videoLinks = [match[2]];
-            else {
-                const search = await this.youtubeService.createVideo(video, true);
-                if (search) {
-                    videoLinks = [`https://youtu.be/${search.id}`];
-                    await channel.send(`Queueing **${search.title}**...`);
-                }
-            }
+            const search = await this.youtubeService.createVideo(video, true);
+            if (search)
+                videoLinks = [`https://youtu.be/${search.id}`];
         }
         else {
             const pinnedSyncList = await this.getSyncList(channel);

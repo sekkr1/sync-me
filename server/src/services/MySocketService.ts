@@ -59,8 +59,9 @@ export class MySocketService {
     }
 
     @Input('add video')
-    async addVideo(@Args(0) videoId: string, @SocketSession session: SocketSession) {
-        const newVideo = await this.youtubeService.createVideo(videoId);
+    async addVideo(@Args(0) video: string, @SocketSession session: SocketSession) {
+        const newVideo = await this.youtubeService.createVideo(video);
+        if (!newVideo) return;
         session.get('room').playlist.push(newVideo);
         this.nsp.to(session.get('roomId')).emit('video added', newVideo);
     }
