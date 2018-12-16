@@ -24,6 +24,7 @@ export class DiscordService implements OnInit {
             $log.info(`Discord server started... Logged in as ${this.client.user.tag}`);
         });
         this.client.on('message', (msg) => this.commandHandler(msg));
+        this.client.on('error', console.error);
     }
 
     async commandHandler(msg: Discord.Message) {

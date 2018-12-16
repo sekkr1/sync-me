@@ -13,11 +13,6 @@ import { SinglePageMiddleware, AuthMiddleware } from "@middlewares";
     rootDir: path.resolve(__dirname),
     domain: 'https://youtube-syncplay.herokuapp.com',
     port: process.env.PORT || 80,
-    httpsPort: 443,
-    httpsOptions: {
-        key: fs.readFileSync(path.resolve(__dirname, '../key.pem')),
-        cert: fs.readFileSync(path.resolve(__dirname, '../cert.pem'))
-    },
     secretKey: 'DESIRED_API_KEY',
     discord: {
         token: 'DISCORD_TOKEN',
