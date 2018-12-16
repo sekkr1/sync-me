@@ -7,22 +7,17 @@ import * as methodOverride from 'method-override';
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as fs from 'fs'
-import { SinglePageMiddleware, AuthMiddleware } from "@middlewares";
+import { AuthMiddleware } from "@middlewares";
 
 @ServerSettings({
     rootDir: path.resolve(__dirname),
-    domain: 'https://youtube-syncplay.herokuapp.com',
-    port: process.env.PORT || 80,
+    port: process.env.PORT || 3000,
     secretKey: 'DESIRED_API_KEY',
     discord: {
         token: 'DISCORD_TOKEN',
         prefix: '!'
     },
-    googleToken: 'YOUTUBE_API_TOKEN',
-    serveStatic: {
-        '/': path.resolve('../client/dist/ngytsync'),
-        '/assets': path.resolve('../assets')
-    }
+    googleToken: 'YOUTUBE_API_TOKEN'
 })
 export class Server extends ServerLoader {
     /**
@@ -37,13 +32,11 @@ export class Server extends ServerLoader {
             .use(bodyParser.json())
             .use(bodyParser.urlencoded({
                 extended: true
-            }))
-            .use(express.static(this.settings.serveStatic['/']));
+            }));
     }
 
     public $afterRoutesInit() {
-        this.use(SinglePageMiddleware)
-            .use(AuthMiddleware);
+        this.use(AuthMiddleware);
     }
 
     public $onReady() {
