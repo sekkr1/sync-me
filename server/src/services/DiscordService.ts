@@ -9,10 +9,7 @@ export class DiscordService implements OnInit {
 
     private readonly client: Discord.Client;
 
-    @Value('discord.token')
-    token: string;
-
-    @Value('discord.prefix')
+    @Value('discordPrefix')
     prefix: string;
 
     constructor(private roomsStorage: RoomsStorage,
@@ -96,6 +93,6 @@ export class DiscordService implements OnInit {
     }
 
     $onInit() {
-        this.client.login(this.token);
+        this.client.login(process.env.DISCORD_TOKEN);
     }
 }

@@ -12,12 +12,7 @@ import { AuthMiddleware } from "@middlewares";
 @ServerSettings({
     rootDir: path.resolve(__dirname),
     port: process.env.PORT || 3000,
-    secretKey: 'DESIRED_API_KEY',
-    discord: {
-        token: 'DISCORD_TOKEN',
-        prefix: '!'
-    },
-    googleToken: 'YOUTUBE_API_TOKEN'
+    discordPrefix: '!'
 })
 export class Server extends ServerLoader {
     /**

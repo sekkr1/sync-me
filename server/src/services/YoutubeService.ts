@@ -8,13 +8,10 @@ export class YoutubeService implements OnInit {
 
     private yt: youtube_v3.Youtube;
 
-    @Value('googleToken')
-    googleToken: string;
-
     $onInit() {
         this.yt = google.youtube({
             version: 'v3',
-            auth: this.googleToken
+            auth: process.env.GOOGLE_TOKEN
         });
     }
 

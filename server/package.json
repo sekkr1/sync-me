@@ -11,7 +11,7 @@
     "barrel": "barrelsby --delete -l below",
     "tsc": "tsc --project tsconfig.json",
     "tsc:w": "tsc -w",
-    "start": "ts-node -r tsconfig-paths/register src/app.ts",
+    "start": "ts-node -r tsconfig-paths/register -r dotenv/config src/app.ts",
     "watch": "nodemon --ext ts --watch src --exec npm run start"
   },
   "author": "",
@@ -31,6 +31,7 @@
     "compression": "^1.7.3",
     "cookie-parser": "^1.4.3",
     "discord.js": "^11.4.2",
+    "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "googleapis": "^35.0.0",
     "method-override": "^3.0.0",
