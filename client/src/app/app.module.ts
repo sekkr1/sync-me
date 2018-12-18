@@ -1,35 +1,21 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PlayerComponent } from './containers/syncer/player/player.component';
-import { PlaylistComponent } from './containers/syncer/playlist/playlist.component';
-import * as io from 'socket.io-client';
-import { SOCKET } from './app.config';
-import { RouterModule, Routes } from '@angular/router';
-import { SyncerComponent } from './containers/syncer/syncer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatModule } from './mat.modules';
-
-const appRoutes: Routes = [
-  { path: ':id', component: SyncerComponent },
-  { path: '', component: SyncerComponent },
-  { path: '**', redirectTo: '' }
-];
-
+import { MatModule } from './mat.module';
+import { PlayerComponent, PlaylistComponent, SyncerComponent } from './containers/syncer';
 
 @NgModule({
   declarations: [
     AppComponent,
     PlayerComponent,
     PlaylistComponent,
-    SyncerComponent,
     SyncerComponent
   ],
   imports: [
-    RouterModule.forRoot(
-      appRoutes
-    ),
     BrowserModule,
+    AppRoutingModule,
     BrowserAnimationsModule,
     MatModule
   ],
