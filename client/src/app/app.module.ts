@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatModule } from './mat.module';
 import { PlayerComponent, PlaylistComponent, SyncerComponent } from './containers/syncer';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { PlayerComponent, PlaylistComponent, SyncerComponent } from './container
     SyncerComponent
   ],
   imports: [
+    FlexLayoutModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,

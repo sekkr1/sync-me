@@ -8,7 +8,7 @@ import { Location } from '@angular/common';
 @Component({
   selector: 'app-syncer',
   templateUrl: './syncer.component.html',
-  styleUrls: ['./syncer.component.css']
+  styleUrls: ['./syncer.component.scss']
 })
 export class SyncerComponent {
 

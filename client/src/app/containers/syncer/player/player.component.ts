@@ -5,7 +5,7 @@ import { Video } from '@shared';
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
-  styleUrls: ['./player.component.css']
+  styleUrls: ['./player.component.scss']
 })
 export class PlayerComponent implements AfterViewInit {
   _video: Video;
@@ -35,8 +35,8 @@ export class PlayerComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.player = YouTubePlayer('player', {
-      width: 1280,
-      height: 720
+      width: "100%",
+      height: "100%"
     });
     this.player.on('stateChange', (event: any) => {
       switch (event.data) {

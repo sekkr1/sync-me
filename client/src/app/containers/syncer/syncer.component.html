@@ -1,10 +1,7 @@
-<mat-grid-list cols="4" rowHeight="800px">
-  <mat-grid-tile [colspan]="3">
-    <app-player *ngIf="playlist.length !== 0" (stateChange)="handlePlayerEvent($event)" [video]="playlist[selected]"></app-player>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <app-playlist (videoAdd)="handleVideoAdd($event)" (videoRemove)="handleVideoRemove($event)" (selectedChange)="handleSelectedChange($event)"
-      [videos]="playlist" [selected]="selected"></app-playlist>
-  </mat-grid-tile>
-</mat-grid-list>
+<div fxLayout fxLayout.sm="column" fxLayout.xs="column">
+  <app-player fxFlex='grow' *ngIf=" playlist.length !==0" (stateChange)="handlePlayerEvent($event)" [video]="playlist[selected]">
+  </app-player>
+  <app-playlist fxFlex='300px' (videoAdd)="handleVideoAdd($event)" (videoRemove)="handleVideoRemove($event)"
+    (selectedChange)="handleSelectedChange($event)" [videos]="playlist" [selected]="selected"></app-playlist>
+</div>
 {{connected}} people connected!
