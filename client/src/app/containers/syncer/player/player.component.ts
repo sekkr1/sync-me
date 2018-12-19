@@ -56,10 +56,11 @@ export class PlayerComponent implements AfterViewInit {
       }
       this.stateChange.emit(event);
     });
-    this.player.loadVideoById({
-      videoId: this.video.id,
-      suggestedQuality: this.suggestedQuality
-    });
+    if (this.video)
+      this.player.loadVideoById({
+        videoId: this.video.id,
+        suggestedQuality: this.suggestedQuality
+      });
   }
 
   public seekTo(seconds: number) {

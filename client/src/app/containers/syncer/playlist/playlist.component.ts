@@ -23,8 +23,11 @@ export class PlaylistComponent {
   @Output()
   videoAdd = new EventEmitter<string>();
 
-  addVideo(newVideo: string) {
-    this.videoAdd.emit(newVideo);
+  newVideo: string = '';
+
+  addVideo() {
+    this.videoAdd.emit(this.newVideo);
+    this.newVideo = '';
   }
 
   removeVideo(id: number) {

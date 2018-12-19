@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatModule } from './mat.module';
 import { PlayerComponent, PlaylistComponent, SyncerComponent } from './containers/syncer';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatModule
+    MatModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

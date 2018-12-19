@@ -1,5 +1,5 @@
 <div fxLayout fxLayout.sm="column" fxLayout.xs="column">
-  <app-player fxFlex='grow' *ngIf=" playlist.length !==0" (stateChange)="handlePlayerEvent($event)" [video]="playlist[selected]">
+  <app-player fxFlex='grow' (stateChange)="handlePlayerEvent($event)" [video]="playlist.length !== 0 ? playlist[selected] : undefined">
   </app-player>
   <app-playlist fxFlex='300px' (videoAdd)="handleVideoAdd($event)" (videoRemove)="handleVideoRemove($event)"
     (selectedChange)="handleSelectedChange($event)" [videos]="playlist" [selected]="selected"></app-playlist>

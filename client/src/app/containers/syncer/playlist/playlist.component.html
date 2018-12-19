@@ -10,9 +10,9 @@
     </button>
   </mat-grid-tile>
 </mat-grid-list>
-<form>
+<form (ngSubmit)="addVideo()">
   <mat-form-field>
-    <input matInput placeholder="Youtube URL or video ID" #newVideo>
+    <input matInput placeholder="Youtube URL or video ID" [(ngModel)]="newVideo" name="newVideo">
   </mat-form-field>
-  <button mat-flat-button (click)="addVideo(newVideo.value)">Add</button>
+  <button mat-flat-button>Add</button>
 </form>
