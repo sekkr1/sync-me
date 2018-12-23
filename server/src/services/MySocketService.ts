@@ -55,6 +55,7 @@ export class MySocketService {
 
     @Input('play video')
     playVideo(@Args(0) id: number, @SocketSession session: SocketSession) {
+        session.get('room').selected = id;
         this.nsp.to(session.get('roomId')).emit('play video', id);
     }
 
