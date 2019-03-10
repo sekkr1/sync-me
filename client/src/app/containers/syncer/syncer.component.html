@@ -1,7 +1,11 @@
-<div fxLayout fxLayout.sm="column" fxLayout.xs="column">
-  <app-player fxFlex='grow' (stateChange)="handlePlayerEvent($event)" [video]="playlist.length !== 0 ? playlist[selected] : undefined">
+<div fxLayout fxLayout.lt-md="column">
+  <app-player (stateChange)="handlePlayerEvent($event)" [video]="playlist.length !== 0 ? playlist[selected] : undefined"
+              fxFlex='grow'>
   </app-player>
-  <app-playlist fxFlex='300px' (videoAdd)="handleVideoAdd($event)" (videoRemove)="handleVideoRemove($event)"
-    (selectedChange)="handleSelectedChange($event)" [videos]="playlist" [selected]="selected"></app-playlist>
+  <div fxFlex="400px">
+    <app-playlist (selectedChange)="handleSelectedChange($event)" (videoAdd)="handleVideoAdd($event)"
+                  (videoRemove)="handleVideoRemove($event)" [selected]="selected"
+                  [videos]="playlist"></app-playlist>
+  </div>
 </div>
-{{connected}} people connected!
+<span class="connected">{{connected}}</span>

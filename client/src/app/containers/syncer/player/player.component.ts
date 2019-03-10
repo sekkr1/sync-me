@@ -1,6 +1,6 @@
-import { Component, AfterViewInit, Input, Output, EventEmitter, Optional } from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, Output} from '@angular/core';
+import {Video} from '@shared';
 import * as YouTubePlayer from 'youtube-player';
-import { Video } from '@shared';
 
 @Component({
   selector: 'app-player',
@@ -8,35 +8,35 @@ import { Video } from '@shared';
   styleUrls: ['./player.component.scss']
 })
 export class PlayerComponent implements AfterViewInit {
+  @Input()
+  suggestedQuality = 'hd1080';
+  @Output()
+  stateChange = new EventEmitter<any>();
+  player: any;
+  ignorePlay = false;
+  ignorePause = false;
+
   _video: Video;
 
-  @Input()
-  set video(value: Video) {
-    this._video = value;
-    if (this.player)
-      this.player.loadVideoById({
-        videoId: value.id,
-        suggestedQuality: this.suggestedQuality
-      });
-  }
   get video() {
     return this._video;
   }
 
   @Input()
-  suggestedQuality = 'hd1080';
-
-  @Output()
-  stateChange = new EventEmitter<any>();
-
-  player: any;
-  ignorePlay = false;
-  ignorePause = false;
+  set video(value: Video) {
+    this._video = value;
+    if (this.player) {
+      this.player.loadVideoById({
+        videoId: value.id,
+        suggestedQuality: this.suggestedQuality
+      });
+    }
+  }
 
   ngAfterViewInit() {
     this.player = YouTubePlayer('player', {
-      width: "100%",
-      height: "100%"
+      width: '100%',
+      height: '100%'
     });
     this.player.on('stateChange', (event: any) => {
       switch (event.data) {
@@ -45,9 +45,12 @@ export class PlayerComponent implements AfterViewInit {
             this.ignorePlay = false;
             return;
           }
+          break;
         case 3:
-          if (this.ignorePlay)
+          if (this.ignorePlay) {
             return;
+          }
+          break;
         case 2:
           if (this.ignorePause) {
             this.ignorePause = false;
@@ -56,11 +59,12 @@ export class PlayerComponent implements AfterViewInit {
       }
       this.stateChange.emit(event);
     });
-    if (this.video)
+    if (this.video) {
       this.player.loadVideoById({
         videoId: this.video.id,
         suggestedQuality: this.suggestedQuality
       });
+    }
   }
 
   public seekTo(seconds: number) {

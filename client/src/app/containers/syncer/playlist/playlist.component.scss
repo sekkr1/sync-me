@@ -1,11 +1,13 @@
-.selected {
-    background-color: gray;
-}
-
 form {
-    width: 100%;
+  width: 100%;
 }
 
 .mat-form-field {
-    width: calc(100% - 70px);
+  width: calc(100% - 70px);
+}
+
+.vid-title {
+  font-size: 14px;
+  text-decoration: none;
+  color: black;
 }

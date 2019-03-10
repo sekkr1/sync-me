@@ -1,18 +1,25 @@
 <mat-grid-list cols="1" rowHeight="100px">
   <mat-grid-tile *ngFor="let video of videos; let i = index" [class.selected]="i === selected">
-    <img src="https://i.ytimg.com/vi/{{video.id}}/hqdefault.jpg" width=168 />
-    <a href="https://youtu.be/{{video.id}}">{{ video.title }}</a>
-    <button mat-flat-button color="primary" *ngIf="i !== selected" (click)="playVideo(i)">
-      <mat-icon>play_arrow</mat-icon>
-    </button>
-    <button mat-flat-button color="warn" (click)="removeVideo(i)">
-      <mat-icon>close</mat-icon>
-    </button>
+    <img alt="video thumbnail" src="https://i.ytimg.com/vi/{{video.id}}/hqdefault.jpg" width=168/>
+    <div>
+      <a class="vid-title" href="https://youtu.be/{{video.id}}">{{ video.title }}</a>
+      <span>{{ video.channel }}</span>
+    </div>
+    <div>
+      <button (click)="playVideo(i)" [disabled]="i === selected" color="primary" mat-flat-button>
+        <mat-icon>play_arrow</mat-icon>
+      </button>
+      <button (click)="removeVideo(i)" color="warn" mat-flat-button>
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
   </mat-grid-tile>
 </mat-grid-list>
 <form (ngSubmit)="addVideo()">
   <mat-form-field>
-    <input matInput placeholder="Youtube URL or video ID" [(ngModel)]="newVideo" name="newVideo">
+    <label>
+      <input [(ngModel)]="newVideo" matInput name="newVideo" placeholder="Youtube URL or video ID">
+    </label>
   </mat-form-field>
   <button mat-flat-button>Add</button>
 </form>

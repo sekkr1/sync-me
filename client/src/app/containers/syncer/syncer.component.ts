@@ -1,9 +1,9 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild, Inject, OnDestroy, isDevMode } from '@angular/core';
-import { PlayerComponent } from './player/player.component';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Location} from '@angular/common';
+import {ChangeDetectorRef, Component, isDevMode, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {PlaylistData, Video} from '@shared';
 import * as io from 'socket.io-client';
-import { PlaylistData, Video } from '@shared';
-import { Location } from '@angular/common';
+import {PlayerComponent} from './player/player.component';
 
 @Component({
   selector: 'app-syncer',
@@ -22,15 +22,15 @@ export class SyncerComponent {
   socket: SocketIOClient.Socket;
 
   constructor(cd: ChangeDetectorRef,
-    activatedRoute: ActivatedRoute,
-    router: Router,
-    location: Location) {
-
+              activatedRoute: ActivatedRoute,
+              router: Router,
+              location: Location) {
     const socketUrl = isDevMode() ? 'http://localhost:3000' : undefined;
-    if (activatedRoute.snapshot.paramMap.get('id'))
-      this.socket = io(socketUrl, { query: `room=${activatedRoute.snapshot.paramMap.get('id')}` });
-    else
+    if (activatedRoute.snapshot.paramMap.get('id')) {
+      this.socket = io(socketUrl, {query: `room=${activatedRoute.snapshot.paramMap.get('id')}`});
+    } else {
       this.socket = io(socketUrl);
+    }
     this.socket.on('joined room', (event: string) => {
       location.go(router.createUrlTree([event]).toString());
     });
@@ -56,15 +56,16 @@ export class SyncerComponent {
       cd.detectChanges();
     });
     this.socket.on('remove video', (event: number) => {
-      if (event < this.selected)
+      if (event < this.selected) {
         this.selected--;
-      else if (event === this.selected) {
+      } else if (event === this.selected) {
         console.log(this.playlist.length);
         console.log(this.selected);
-        if (this.selected === this.playlist.length - 1)
+        if (this.selected === this.playlist.length - 1) {
           this.selected--;
-        else
+        } else {
           this.selected++;
+        }
       }
       this.playlist.splice(event, 1);
       cd.detectChanges();
@@ -89,6 +90,7 @@ export class SyncerComponent {
         break;
     }
   }
+
   handleVideoRemove(id: number) {
     this.socket.emit('remove video', id);
   }

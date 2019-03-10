@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Video } from '@shared';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Video} from '@shared';
 
 @Component({
   selector: 'app-playlist',
@@ -23,7 +23,7 @@ export class PlaylistComponent {
   @Output()
   videoAdd = new EventEmitter<string>();
 
-  newVideo: string = '';
+  newVideo = '';
 
   addVideo() {
     this.videoAdd.emit(this.newVideo);

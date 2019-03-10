@@ -1,44 +1,42 @@
-import { ServerLoader, ServerSettings, GlobalAcceptMimesMiddleware } from "@tsed/common";
-import "@tsed/socketio";
-import * as path from 'path';
-import * as cookieParser from 'cookie-parser';
-import * as compression from 'compression';
-import * as methodOverride from 'method-override';
+import {AuthMiddleware} from '@middlewares';
+import {GlobalAcceptMimesMiddleware, ServerLoader, ServerSettings} from '@tsed/common';
+import '@tsed/socketio';
 import * as bodyParser from 'body-parser';
-import * as express from 'express';
-import * as fs from 'fs'
-import { AuthMiddleware } from "@middlewares";
+import * as compression from 'compression';
+import * as cookieParser from 'cookie-parser';
+import * as methodOverride from 'method-override';
+import * as path from 'path';
 
 @ServerSettings({
-    rootDir: path.resolve(__dirname),
-    port: process.env.PORT || 3000,
-    discordPrefix: '!'
+  rootDir: path.resolve(__dirname),
+  port: process.env.PORT || 3000,
+  discordPrefix: '!'
 })
 export class Server extends ServerLoader {
-    /**
-  * This method let you configure the middleware required by your application to works.
-  * @returns {Server}
-  */
-    public $onMountingMiddlewares(): void | Promise<any> {
-        this.use(GlobalAcceptMimesMiddleware)
-            .use(cookieParser())
-            .use(compression({}))
-            .use(methodOverride())
-            .use(bodyParser.json())
-            .use(bodyParser.urlencoded({
-                extended: true
-            }));
-    }
+  /**
+   * This method let you configure the middleware required by your application to works.
+   * @returns {Server}
+   */
+  public $onMountingMiddlewares(): void | Promise<any> {
+    this.use(GlobalAcceptMimesMiddleware)
+    .use(cookieParser())
+    .use(compression({}))
+    .use(methodOverride())
+    .use(bodyParser.json())
+    .use(bodyParser.urlencoded({
+      extended: true
+    }));
+  }
 
-    public $afterRoutesInit() {
-        this.use(AuthMiddleware);
-    }
+  public $afterRoutesInit() {
+    this.use(AuthMiddleware);
+  }
 
-    public $onReady() {
-        console.log('Server started...');
-    }
+  public $onReady() {
+    console.log('Server started...');
+  }
 
-    public $onServerInitError(err) {
-        console.error(err);
-    }
+  public $onServerInitError(err) {
+    console.error(err);
+  }
 }

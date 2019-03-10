@@ -1,7 +1,7 @@
-import { Video } from './Video';
+import {Video} from './Video';
 
 export interface PlaylistData {
-    playlist: Video[];
-    selected: number;
-    connected: number;
+  playlist: Video[];
+  selected: number;
+  connected: number;
 }
