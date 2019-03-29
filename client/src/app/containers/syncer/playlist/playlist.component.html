@@ -3,7 +3,7 @@
     <img alt="video thumbnail" src="https://i.ytimg.com/vi/{{video.id}}/hqdefault.jpg" width=168/>
     <div>
       <a class="vid-title" href="https://youtu.be/{{video.id}}">{{ video.title }}</a>
-      <span>{{ video.channel }}</span>
+      <span class="vid-channel">{{ video.channel }}</span>
     </div>
     <div>
       <button (click)="playVideo(i)" [disabled]="i === selected" color="primary" mat-flat-button>

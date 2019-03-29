@@ -15,8 +15,14 @@ export class DiscordService implements OnInit {
   constructor(private roomsStorage: RoomsStorage,
               private youtubeService: YoutubeService) {
     this.client = new Discord.Client();
-    this.client.on('ready', () => {
+    this.client.on('ready', async () => {
       $log.info(`Discord server started... Logged in as ${this.client.user.tag}`);
+      await this.client.user.setPresence({
+        game: {
+          name: 'syncplay.video | Serving over a million servers.',
+          type: 'PLAYING'
+        }
+      });
     });
     this.client.on('messageReactionAdd', (react, user) => this.reactionHandler(react, user));
     this.client.on('message', (msg) => this.commandHandler(msg));
