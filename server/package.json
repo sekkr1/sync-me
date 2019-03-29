@@ -11,7 +11,7 @@
     "barrel": "barrelsby --delete -l below",
     "tsc": "tsc --project tsconfig.json",
     "tsc:w": "tsc -w",
-    "start": "ts-node -r tsconfig-paths/register -r dotenv/config src/app.ts",
+    "start": "ts-node -T -r tsconfig-paths/register -r dotenv/config src/app.ts",
     "watch": "nodemon --ext ts --watch src --exec npm run start"
   },
   "author": "",

@@ -1,5 +1,6 @@
 import {OnInit, Service, Value} from '@tsed/common';
 import * as Discord from 'discord.js';
+import {Message, MessageReaction, RichEmbed, TextChannel, User} from 'discord.js';
 import {$log} from 'ts-log-debug';
 import {RoomsStorage} from './RoomsStorage';
 import {YoutubeService} from './YoutubeService';
@@ -13,14 +14,22 @@ export class DiscordService implements OnInit {
 
   constructor(private roomsStorage: RoomsStorage,
               private youtubeService: YoutubeService) {
-    this.client = new Discord.Client({
-      messageCacheMaxSize: 1
-    });
+    this.client = new Discord.Client();
     this.client.on('ready', () => {
       $log.info(`Discord server started... Logged in as ${this.client.user.tag}`);
     });
+    this.client.on('messageReactionAdd', (react, user) => this.reactionHandler(react, user));
     this.client.on('message', (msg) => this.commandHandler(msg));
     this.client.on('error', console.error);
+  }
+
+  async reactionHandler(react: MessageReaction, user: User) {
+    if (user.bot || user.equals(this.client.user)) {
+      return;
+    }
+    if (react.me) {
+      await this.syncCommand(react.message.channel as TextChannel, react.message.content);
+    }
   }
 
   async commandHandler(msg: Discord.Message) {
@@ -31,8 +40,8 @@ export class DiscordService implements OnInit {
       slice = `<@!${this.client.user.id}>`.length;
     } else if (msg.content.startsWith(this.prefix) && !msg.guild) {
       slice = this.prefix.length;
-    } else {
-      return;
+    } else if (msg.content.match(/(\?v=|youtu\.be\/)(.{11})/i)) {
+      return msg.react('🔁');
     }
 
     const args = msg.content.slice(slice).trim().split(/ +/);
@@ -70,9 +79,10 @@ export class DiscordService implements OnInit {
     let videoLinks: string[];
     if (video) {
       const search = await this.youtubeService.createVideo(video, true);
-      if (search) {
-        videoLinks = [`https://youtu.be/${search.id}`];
+      if (!search) {
+        return;
       }
+      videoLinks = [`https://youtu.be/${search.id}`];
     } else {
       const pinnedSyncList = await this.getSyncList(channel);
 
@@ -85,7 +95,9 @@ export class DiscordService implements OnInit {
     }
 
     const roomId = await this.roomsStorage.reserveRoom(videoLinks);
-    await channel.send(`Your sync is waiting over at ${process.env.DOMAIN}/${roomId}`);
+    const embed = new RichEmbed().setTitle(`Your sync is waiting over at ${process.env.DOMAIN}/${roomId}`).setColor('DARK_AQUA');
+    const message = await channel.send(embed) as Message;
+    await message.delete(60 * 1000);
   }
 
   async getSyncList(channel: Discord.TextChannel): Promise<Discord.Message | void> {
