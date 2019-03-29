@@ -28,6 +28,7 @@ export class DiscordService implements OnInit {
       return;
     }
     if (react.me) {
+      await react.remove(user);
       await this.syncCommand(react.message.channel as TextChannel, react.message.content);
     }
   }
