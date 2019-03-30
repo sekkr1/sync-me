@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {SyncerComponent} from './containers/syncer';
+import {SyncerComponent} from './syncer/syncer.component';
 
 const routes: Routes = [
   {path: ':id', component: SyncerComponent},
