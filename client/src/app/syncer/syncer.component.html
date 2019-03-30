@@ -1,0 +1,11 @@
+<div fxLayout fxLayout.lt-md="column">
+  <app-player (stateChange)="handlePlayerEvent($event)" [video]="playlist.length !== 0 ? playlist[selected] : undefined"
+              fxFlex='grow'>
+  </app-player>
+  <div fxFlex="400px">
+    <app-playlist (selectedChange)="handleSelectedChange($event)" (videoAdd)="handleVideoAdd($event)"
+                  (videoRemove)="handleVideoRemove($event)" [selected]="selected"
+                  [videos]="playlist"></app-playlist>
+  </div>
+</div>
+<span class="connected">{{connected}}</span>
