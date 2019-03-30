@@ -19,7 +19,7 @@ export class DiscordService implements OnInit {
       $log.info(`Discord server started... Logged in as ${this.client.user.tag}`);
       await this.client.user.setPresence({
         game: {
-          name: 'syncplay.video | Serving over a million servers.',
+          name: `${process.env.DOMAIN} | Serving over a million servers.`,
           type: 'PLAYING'
         }
       });
