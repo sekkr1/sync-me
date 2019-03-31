@@ -59,4 +59,9 @@ jobs:
             ssh root@$SERVER chown www-data:www-data -R /var/www/sync-me.video
             systemctl reload nginx
           working_directory: dist
-
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build
+      - deploy
