@@ -38,6 +38,7 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "14:6c:5d:10:58:c0:a2:9e:6a:b4:9d:31:02:3e:82:00"
+      - run: echo $FINGERPRINT >> ~/.ssh/known_hosts
       - deploy:
-          command: scp -r dist/sync-me/ root@$SERVER:/var/www/sync-me.video
+          command: scp -r dist/sync-me/* root@$SERVER:/var/www/sync-me.video
           working_directory: ~/project/client
