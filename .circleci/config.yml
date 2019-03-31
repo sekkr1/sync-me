@@ -14,9 +14,8 @@ jobs:
       # Restore local dependencies from cache
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-{{ checksum "client/package.json" }}
             - v1-dependencies-
-          working_directory: client
       # Install project dependencies
       - run:
           name: Install local dependencies
@@ -24,10 +23,9 @@ jobs:
           working_directory: ~/project/client
       # Cache local dependencies if they don't exist
       - save_cache:
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: v1-dependencies-{{ checksum "client/package.json" }}
           paths:
-            - node_modules
-          working_directory: client
+            - client/node_modules
       # Build project with different configuration based on
       # the current branch
       - run:
@@ -38,8 +36,7 @@ jobs:
       - save_cache:
           key: v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
           paths:
-            - dist
-          working_directory: client
+            - client/dist
   deploy:
     docker:
       - image: circleci/node
