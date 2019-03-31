@@ -56,6 +56,8 @@ jobs:
       - deploy:
           name: Deploy to server
           command: |
+            ls
+            pwd
             ssh root@$SERVER rm -rf /var/www/sync-me.video/*
             scp -r dist/sync-me/* root@$SERVER:/var/www/sync-me.video
             ssh root@$SERVER chown www-data:www-data -R /var/www/sync-me.video
