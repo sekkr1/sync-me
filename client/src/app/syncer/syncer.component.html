@@ -6,6 +6,14 @@
     <app-playlist (selectedChange)="handleSelectedChange($event)" (videoAdd)="handleVideoAdd($event)"
                   (videoRemove)="handleVideoRemove($event)" [selected]="selected"
                   [videos]="playlist"></app-playlist>
+    <button (click)="openDiscordDialog()" class="big-btn" color="primary" mat-flat-button>
+      <img alt="Discord" src="/assets/discord.svg"/>
+      Add to Discord
+    </button>
+    <button (click)="openDonate()" class="big-btn" color="accent" mat-flat-button>
+      <mat-icon>monetization_on</mat-icon>
+      Help keep the servers running
+    </button>
   </div>
 </div>
 <span class="connected">{{connected}}</span>

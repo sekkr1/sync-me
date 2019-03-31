@@ -10,7 +10,11 @@ import * as path from 'path';
 @ServerSettings({
   rootDir: path.resolve(__dirname),
   port: process.env.PORT || 3000,
-  discordPrefix: '!'
+  discordPrefix: '!',
+  socketIO: {
+    pingInterval: 7000,
+    pingTimeout: 3500
+  }
 })
 export class Server extends ServerLoader {
   /**
