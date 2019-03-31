@@ -47,6 +47,7 @@ jobs:
       - run:
           name: Add server fingerprint to known_hosts
           command: echo $FINGERPRINT >> ~/.ssh/known_hosts
+      - run: ls
       - deploy:
           name: Deploy to server
           command: |
