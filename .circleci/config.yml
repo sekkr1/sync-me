@@ -43,8 +43,10 @@ jobs:
     docker:
       - image: circleci/node
     steps:
+      - run: ls
       - restore_cache:
           key: v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+      - run: ls
       - add_ssh_keys:
           fingerprints:
             - "14:6c:5d:10:58:c0:a2:9e:6a:b4:9d:31:02:3e:82:00"
