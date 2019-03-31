@@ -49,12 +49,11 @@ jobs:
           command: echo $FINGERPRINT >> ~/.ssh/known_hosts
       - attach_workspace:
           at: .
-      - run: ls
       - deploy:
           name: Deploy to server
           command: |
             ssh root@$SERVER rm -rf /var/www/sync-me.video/*
-            scp -r client/dist/sync-me/* root@$SERVER:/var/www/sync-me.video
+            scp -r dist/sync-me/* root@$SERVER:/var/www/sync-me.video
             ssh root@$SERVER chown www-data:www-data -R /var/www/sync-me.video
             ssh root@$SERVER systemctl reload nginx
 workflows:
