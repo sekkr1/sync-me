@@ -2,7 +2,6 @@ version: 2
 jobs:
   # The build job
   build:
-    working_directory: ~/project
     docker:
       - image: circleci/node
     steps:
@@ -36,6 +35,9 @@ jobs:
           command: npm run build
           working_directory: ~/project/client
       # Cache the dist folder for the deploy job
+      - add_ssh_keys:
+          fingerprints:
+            - "14:6c:5d:10:58:c0:a2:9e:6a:b4:9d:31:02:3e:82:00"
       - deploy:
           command: scp -r dist/sync-me/ root@$SERVER:/var/www/sync-me.video
           working_directory: ~/project/client
