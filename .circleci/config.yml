@@ -40,20 +40,23 @@ jobs:
           paths:
             - dist
   deploy:
-    - restore_cache:
-        key: v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
-    - add_ssh_keys:
-        fingerprints:
-          - "14:6c:5d:10:58:c0:a2:9e:6a:b4:9d:31:02:3e:82:00"
-    - run:
-        name: Add server fingerprint to known_hosts
-        command: echo $FINGERPRINT >> ~/.ssh/known_hosts
-    - deploy:
-        name: Deploy to server
-        command: |
-          ssh root@$SERVER rm -rf /var/www/sync-me.video/*
-          scp -r dist/sync-me/* root@$SERVER:/var/www/sync-me.video
-          ssh root@$SERVER chown www-data:www-data -R /var/www/sync-me.video
-          systemctl reload nginx
-        working_directory: dist
+    docker:
+      - image: circleci/node
+    steps:
+      - restore_cache:
+          key: v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+      - add_ssh_keys:
+          fingerprints:
+            - "14:6c:5d:10:58:c0:a2:9e:6a:b4:9d:31:02:3e:82:00"
+      - run:
+          name: Add server fingerprint to known_hosts
+          command: echo $FINGERPRINT >> ~/.ssh/known_hosts
+      - deploy:
+          name: Deploy to server
+          command: |
+            ssh root@$SERVER rm -rf /var/www/sync-me.video/*
+            scp -r dist/sync-me/* root@$SERVER:/var/www/sync-me.video
+            ssh root@$SERVER chown www-data:www-data -R /var/www/sync-me.video
+            systemctl reload nginx
+          working_directory: dist
 
