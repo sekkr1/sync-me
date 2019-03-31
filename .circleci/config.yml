@@ -12,27 +12,30 @@ jobs:
       - run:
           name: Show current branch
           command: echo ${CIRCLE_BRANCH}
-      - run:
-          command: cd client
       # Restore local dependencies from cache
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
+          working_directory: ~/project/client
       # Install project dependencies
       - run:
           name: Install local dependencies
           command: yarn install
+          working_directory: ~/project/client
       # Cache local dependencies if they don't exist
       - save_cache:
           key: v1-dependencies-{{ checksum "package.json" }}
           paths:
             - node_modules
+          working_directory: ~/project/client
       # Build project with different configuration based on
       # the current branch
       - run:
           name: Building
           command: npm run build
+          working_directory: ~/project/client
       # Cache the dist folder for the deploy job
       - deploy:
           command: scp -r dist/sync-me/ root@$SERVER:/var/www/sync-me.video
+          working_directory: ~/project/client
