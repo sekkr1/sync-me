@@ -39,6 +39,7 @@ jobs:
           key: v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - dist
+          working_directory: client
   deploy:
     docker:
       - image: circleci/node
