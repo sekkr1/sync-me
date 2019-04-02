@@ -1,19 +1,12 @@
-<div fxLayout fxLayout.lt-md="column">
-  <app-player (stateChange)="handlePlayerEvent($event)" [video]="playlist.length !== 0 ? playlist[selected] : undefined"
-              fxFlex='grow'>
-  </app-player>
-  <div fxFlex="400px">
+<div class="row">
+  <div class="col-md px-0 px-sm-3 pr-md-0">
+    <app-player (stateChange)="handlePlayerEvent($event)"
+                [video]="playlist.length !== 0 ? playlist[selected] : undefined">
+    </app-player>
+  </div>
+  <div class="col-md-6 col-lg-5 col-xl-3 px-0 px-sm-3 pl-md-0">
     <app-playlist (selectedChange)="handleSelectedChange($event)" (videoAdd)="handleVideoAdd($event)"
                   (videoRemove)="handleVideoRemove($event)" [selected]="selected"
                   [videos]="playlist"></app-playlist>
-    <button (click)="openDiscordDialog()" class="big-btn" color="primary" mat-flat-button>
-      <img alt="Discord" src="/assets/discord.svg"/>
-      Add to Discord
-    </button>
-    <button (click)="openDonate()" class="big-btn" color="accent" mat-flat-button>
-      <mat-icon>monetization_on</mat-icon>
-      Help keep the servers running
-    </button>
   </div>
 </div>
-<span class="connected">{{connected}}</span>

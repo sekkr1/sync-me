@@ -1,0 +1,18 @@
+@import "~bootstrap/scss/bootstrap";
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.navbar-nav {
+  button {
+    @include media-breakpoint-up(md) {
+      margin-left: 20px;
+    }
+    @include media-breakpoint-down(sm) {
+      margin-top: 10px;
+    }
+  }
+}

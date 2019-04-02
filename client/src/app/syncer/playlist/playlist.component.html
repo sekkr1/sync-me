@@ -1,25 +1,57 @@
-<mat-grid-list cols="1" rowHeight="100px">
-  <mat-grid-tile *ngFor="let video of videos; let i = index" [class.selected]="i === selected">
-    <img alt="video thumbnail" src="https://i.ytimg.com/vi/{{video.id}}/hqdefault.jpg" width=168/>
-    <div>
-      <a class="vid-title" href="https://youtu.be/{{video.id}}">{{ video.title }}</a>
-      <span class="vid-channel">{{ video.channel }}</span>
+<form (ngSubmit)="addVideo()" class="form-inline ml-md-4 my-3 mt-md-0">
+  <div class="form-group w-100 my-0">
+    <div class="input-group w-100">
+      <input [(ngModel)]="newVideo" class="form-control form-control-lg mr-3" name="newVideo"
+             placeholder="YouTube URL here"
+             type="text">
+      <button class="btn btn-info btn-lg" type="submit">Queue</button>
     </div>
-    <div>
-      <button (click)="playVideo(i)" [disabled]="i === selected" color="primary" mat-flat-button>
-        <mat-icon>play_arrow</mat-icon>
-      </button>
-      <button (click)="removeVideo(i)" color="warn" mat-flat-button>
-        <mat-icon>close</mat-icon>
-      </button>
-    </div>
-  </mat-grid-tile>
-</mat-grid-list>
-<form (ngSubmit)="addVideo()">
-  <mat-form-field>
-    <label>
-      <input [(ngModel)]="newVideo" matInput name="newVideo" placeholder="Youtube URL or video ID">
-    </label>
-  </mat-form-field>
-  <button mat-flat-button>Add</button>
+  </div>
 </form>
+<div #playlistElem class="d-flex flex-column">
+  <div *ngFor="let video of videos; let i = index" class="mb-1 mb-sm-2">
+    <ng-template [ngIf]="i === swiped">
+      <div
+        *ngIf="swipeX > 0"
+        class="bg-danger position-absolute playlist-item-action pl-3 pt-2 text-left align-middle d-sm-none w-100 text-light d-inline-block">
+        <h1 class="font-weight-bold">DELETE</h1>
+      </div>
+      <div
+        *ngIf="swipeX < 0"
+        [class.bg-primary]="i !== selected"
+        [class.bg-secondary]="i === selected" class="position-absolute playlist-item-action pr-3 pt-2 text-right align-middle d-sm-none w-100 d-inline-block">
+        <h1 class="font-weight-bold">PLAY</h1>
+      </div>
+    </ng-template>
+    <div (panend)="handleSwipeEnd(i, $event)"
+         (panleft)="handleSwipe(i,$event)"
+         (panright)="handleSwipe(i,$event)"
+         [style.background-color]="themeService.isDarkMode ? '#222' : '#fff'"
+         [style.left]="i === swiped ? swipeX + 'px' : '0'"
+         class="playlist-item playlist-active position-relative">
+      <div class="playback flex-column d-none d-sm-flex">
+        <button (click)="playVideo(i)" [disabled]="selected === i" class=" btn btn-link px-3 flex-fill text-muted"
+                type="button">
+          <i class="icon ion-md-play"></i>
+        </button>
+        <button (click)="removeVideo(i)" class=" btn btn-link px-3 flex-fill text-danger" type="button">
+          <i class="icon ion-md-trash"></i>
+        </button>
+      </div>
+      <div class="position-relative h-100">
+        <img height="100%"
+             src="https://i.ytimg.com/vi/{{ video.id }}/mqdefault.jpg"/>
+        <div *ngIf="selected === i" class="thumb-overlay">
+          <h2 [class.text-dark]="!themeService.isDarkMode" [class.text-light]="themeService.isDarkMode"
+              class="text-center my-4">
+            <i class="icon ion-md-play"></i>
+          </h2>
+        </div>
+      </div>
+      <div class="ml-1">
+        <h6>{{ video.title }}</h6>
+        <span>{{ video.channel }}</span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,17 +1,72 @@
-form {
-  width: 100%;
+@import "~bootstrap/scss/bootstrap";
+
+.playlist-item-action {
+  height: 99px;
 }
 
-.mat-form-field {
-  width: calc(100% - 70px);
-}
+.playlist-item {
+  height: 100px;
+  display: flex;
 
-.vid-title {
-  font-size: 14px;
-  text-decoration: none;
-  color: white;
-}
+  .thumb-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--secondary);
+    opacity: .5;
+  }
 
-.vid-channel {
-  color: rgb(170, 170, 170);
+  .playback button {
+    opacity: .2;
+    transition: opacity .5s;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  & > * {
+    display: inline-block;
+  }
+
+  h6 {
+    /* Over flow hidden hides the text if it is more than N lines  */
+    overflow: hidden;
+    /* To set '...' in absolute position */
+    position: relative;
+    /* Use this value to count block height */
+    line-height: 1em;
+    /* Max-height = line-height (1.2) * lines max number (2) */
+    max-height: 3em;
+    /* place for '...' */
+    padding-right: 13px;
+
+    /* create the ... */
+    &:before {
+      /* points in the end */
+      content: '...';
+      /* absolute position */
+      position: absolute;
+      /* set position to right bottom corner of block */
+      right: 20px;
+      bottom: 0;
+    }
+
+    /* hide ... if we have text, which is less than or equal to max lines */
+    &:after {
+      /* points in the end */
+      content: '';
+      /* absolute position */
+      position: absolute;
+      /* set position to right bottom corner of text */
+      right: 20px;
+      /* set width and height */
+      width: 1em;
+      height: 1em;
+      margin-top: 0.2em;
+      /* bg color = bg color under block */
+    }
+  }
 }

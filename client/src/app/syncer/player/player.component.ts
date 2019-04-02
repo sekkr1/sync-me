@@ -35,8 +35,7 @@ export class PlayerComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.player = YouTubePlayer('player', {
-      width: '100%',
-      height: '100%'
+      class: 'embed-responsive-item'
     });
     this.player.on('stateChange', (event: any) => {
       switch (event.data) {
