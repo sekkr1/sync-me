@@ -1,0 +1,25 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Welcome to your new room</h4>
+</div>
+<div class="modal-body">
+  <form>
+    <div class="form-group">
+      <label for="pastedUrl">Paste your video here</label>
+      <input [(ngModel)]="pastedUrl" class="form-control" id="pastedUrl" name="pastedUrl" placeholder="Youtube URL here"
+             type="text">
+      <small class="form-text text-muted">Optional</small>
+    </div>
+    <hr>
+    <div class="form-group">
+      <label for="copyUrl">And share this link with your friends!</label>
+      <div class="input-group mb-2">
+        <input #linkInput class="form-control text-muted" id="copyUrl" readonly type="text" value="{{ getURL() }}">
+        <div class="input-group-append">
+          <button (click)="copyLink()" class="input-group-text btn">
+            <i class="icon ion-md-link"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

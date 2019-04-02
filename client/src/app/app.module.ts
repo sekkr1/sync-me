@@ -1,10 +1,12 @@
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig} from '@angular/platform-browser';
+import {ModalModule} from 'ngx-bootstrap';
 import {CollapseModule} from 'ngx-bootstrap/collapse';
 import {AppRoutingModule} from './app-routing.module';
 
 import {AppComponent} from './app.component';
+import {NewRoomComponent} from './modals/new-room/new-room.component';
 import {SafePipe} from './pipes/safe.pipe';
 import {ThemeService} from './services/theme.service';
 import {PlayerComponent} from './syncer/player/player.component';
@@ -23,11 +25,13 @@ export class MyHammerConfig extends HammerGestureConfig {
     SafePipe,
     SyncerComponent,
     PlayerComponent,
-    PlaylistComponent
+    PlaylistComponent,
+    NewRoomComponent
   ],
   imports: [
     BrowserModule,
     CollapseModule.forRoot(),
+    ModalModule.forRoot(),
     AppRoutingModule,
     FormsModule
   ],
@@ -37,6 +41,9 @@ export class MyHammerConfig extends HammerGestureConfig {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig
     }
+  ],
+  entryComponents: [
+    NewRoomComponent
   ],
   bootstrap: [AppComponent]
 })

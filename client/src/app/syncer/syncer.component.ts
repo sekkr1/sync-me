@@ -2,7 +2,9 @@ import {Location} from '@angular/common';
 import {ChangeDetectorRef, Component, isDevMode, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PlaylistData, Video} from '@shared';
+import {BsModalService} from 'ngx-bootstrap';
 import * as io from 'socket.io-client';
+import {NewRoomComponent} from '../modals/new-room/new-room.component';
 import {PlayerComponent} from './player/player.component';
 
 @Component({
@@ -24,7 +26,8 @@ export class SyncerComponent {
   constructor(cd: ChangeDetectorRef,
               activatedRoute: ActivatedRoute,
               router: Router,
-              location: Location) {
+              location: Location,
+              modalService: BsModalService) {
     const socketUrl = isDevMode() ? 'http://localhost:3000' : undefined;
     if (activatedRoute.snapshot.paramMap.get('id')) {
       this.socket = io(socketUrl, {query: `room=${activatedRoute.snapshot.paramMap.get('id')}`});
@@ -32,7 +35,15 @@ export class SyncerComponent {
       this.socket = io(socketUrl);
     }
     this.socket.on('joined room', (event: string) => {
+      if (event === activatedRoute.snapshot.paramMap.get('id')) {
+        return;
+      }
+      // new room created
       location.go(router.createUrlTree([event]).toString());
+      modalService.show(NewRoomComponent, {
+        ignoreBackdropClick: true,
+        initialState: {addVideo: (video: string) => this.handleVideoAdd(video)}
+      });
     });
     this.socket.on('playlist data', (event: PlaylistData) => {
       this.playlist = event.playlist;
