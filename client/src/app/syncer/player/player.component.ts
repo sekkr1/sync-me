@@ -25,12 +25,17 @@ export class PlayerComponent implements AfterViewInit {
   @Input()
   set video(value: Video) {
     this._video = value;
-    if (this.player) {
-      this.player.loadVideoById({
-        videoId: value.id,
-        suggestedQuality: this.suggestedQuality
-      });
+    if (!this.player) {
+      return;
     }
+    if (!value) {
+      this.player.stopVideo();
+      return;
+    }
+    this.player.loadVideoById({
+      videoId: value.id,
+      suggestedQuality: this.suggestedQuality
+    });
   }
 
   ngAfterViewInit() {

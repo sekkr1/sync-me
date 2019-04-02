@@ -56,16 +56,10 @@ export class SyncerComponent {
       cd.detectChanges();
     });
     this.socket.on('remove video', (event: number) => {
-      if (event < this.selected) {
+      if (this.playlist.length > 1 &&
+        (event < this.selected ||
+          (event === this.selected && this.selected === this.playlist.length - 1))) {
         this.selected--;
-      } else if (event === this.selected) {
-        console.log(this.playlist.length);
-        console.log(this.selected);
-        if (this.selected === this.playlist.length - 1) {
-          this.selected--;
-        } else {
-          this.selected++;
-        }
       }
       this.playlist.splice(event, 1);
       cd.detectChanges();
