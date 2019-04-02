@@ -1,7 +1,7 @@
 <link [href]="('/assets/' + (themeService.isDarkMode ? 'dark' : 'light') + '.min.css') | safe" rel="stylesheet">
 <div class="d-flex flex-column">
   <nav
-    [ngClass]="{'navbar-light navbar-light': !themeService.isDarkMode,'navbar-dark bg-dark': themeService.isDarkMode}"
+    [ngClass]="{'navbar-light bg-light': !themeService.isDarkMode,'navbar-dark bg-dark': themeService.isDarkMode}"
     class="navbar navbar-expand-md flex-shrink">
     <a class="navbar-brand" href="#">
       <img alt="" class="d-inline-block align-top" height="30" src="/assets/logo.svg" width="30">
