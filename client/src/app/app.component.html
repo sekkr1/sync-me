@@ -3,7 +3,7 @@
   <nav
     [ngClass]="{'navbar-light bg-light': !themeService.isDarkMode,'navbar-dark bg-dark': themeService.isDarkMode}"
     class="navbar navbar-expand-md flex-shrink">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" routerLink="/">
       <img alt="" class="d-inline-block align-top" height="30" src="/assets/logo.svg" width="30">
       SYNC ME
     </a>
@@ -41,18 +41,18 @@
   <footer class="flex-shrink">
     <nav [class.bg-dark]="themeService.isDarkMode" [class.bg-light]="!themeService.isDarkMode"
          class="nav justify-content-center nav-pills">
-      <a class="nav-link" href="#">API</a>
+      <a class="nav-link" routerLink="/api">API</a>
       <span class="navbar-text">
     -
   </span>
-      <a class="nav-link" href="#">
+      <a class="nav-link" href="https://github.com/sekkr1/sync-me" target="_blank">
         <i class="icon ion-logo-github"></i>
         GitHub
       </a>
       <span class="navbar-text">
     -
   </span>
-      <a class="nav-link" href="#">FAQ</a>
+      <a class="nav-link" routerLink="/faq">FAQ</a>
     </nav>
   </footer>
 </div>

@@ -12,6 +12,8 @@ import {ThemeService} from './services/theme.service';
 import {PlayerComponent} from './syncer/player/player.component';
 import {PlaylistComponent} from './syncer/playlist/playlist.component';
 import {SyncerComponent} from './syncer/syncer.component';
+import { FAQComponent } from './faq/faq.component';
+import { APIComponent } from './api/api.component';
 
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = {
@@ -26,7 +28,9 @@ export class MyHammerConfig extends HammerGestureConfig {
     SyncerComponent,
     PlayerComponent,
     PlaylistComponent,
-    NewRoomComponent
+    NewRoomComponent,
+    FAQComponent,
+    APIComponent
   ],
   imports: [
     BrowserModule,
