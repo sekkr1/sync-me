@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {environment} from '../environments/environment';
 import {ThemeService} from './services/theme.service';
 
 @Component({
@@ -8,6 +9,7 @@ import {ThemeService} from './services/theme.service';
 })
 export class AppComponent {
   isCollapsed = true;
+  enviroment = environment;
 
   constructor(public themeService: ThemeService) {
   }

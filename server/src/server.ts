@@ -1,4 +1,3 @@
-import {AuthMiddleware} from '@middlewares';
 import {GlobalAcceptMimesMiddleware, ServerLoader, ServerSettings} from '@tsed/common';
 import '@tsed/socketio';
 import * as bodyParser from 'body-parser';
@@ -33,7 +32,7 @@ export class Server extends ServerLoader {
   }
 
   public $afterRoutesInit() {
-    this.use(AuthMiddleware);
+    //this.use(AuthMiddleware);
   }
 
   public $onReady() {

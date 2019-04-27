@@ -1,4 +1,5 @@
-<link [href]="('/assets/' + (themeService.isDarkMode ? 'dark' : 'light') + '.min.css') | safe" rel="stylesheet">
+<link [href]="('/assets/' + (themeService.isDarkMode ? 'dark' : 'light') + '.min.css') | safe: 'resourceUrl'"
+      rel="stylesheet">
 <div class="d-flex flex-column">
   <nav
     [ngClass]="{'navbar-light bg-light': !themeService.isDarkMode,'navbar-dark bg-dark': themeService.isDarkMode}"
@@ -16,6 +17,14 @@
 
     <div [collapse]="isCollapsed" class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
       <div class="navbar-nav">
+        <a
+          [href]="('javascript:if(location.hostname===\'www.youtube.com\')location.href=\'' + enviroment.domain + '/rest/reserve/video/\'+encodeURIComponent(location.href)') | safe: 'url'"
+          class="d-none d-md-inline-block">
+          <button class="btn btn-info" type="button">
+            <i class="icon ion-md-bookmark"></i>
+            Bookmark
+          </button>
+        </a>
         <button (click)="openDonate()" class="btn btn-success" type="button">
           <i class="icon ion-md-cash"></i>
           Help keep the servers running
