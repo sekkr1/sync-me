@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  domain: 'https://sync-me.video'
+  domain: 'https://sync-me.video',
+  youtube_api_key: 'XXXX'
 };
 
 /*

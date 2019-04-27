@@ -5,6 +5,7 @@ import {PlaylistData, Video} from '@shared';
 import {BsModalService} from 'ngx-bootstrap';
 import * as io from 'socket.io-client';
 import {NewRoomComponent} from '../modals/new-room/new-room.component';
+import {YoutubeService} from '../services/youtube.service';
 import {PlayerComponent} from './player/player.component';
 
 @Component({
@@ -27,7 +28,8 @@ export class SyncerComponent {
               activatedRoute: ActivatedRoute,
               router: Router,
               location: Location,
-              modalService: BsModalService) {
+              modalService: BsModalService,
+              ytService: YoutubeService) {
     const socketUrl = isDevMode() ? 'http://localhost:3000' : undefined;
     if (activatedRoute.snapshot.paramMap.get('id')) {
       this.socket = io(socketUrl, {query: `room=${activatedRoute.snapshot.paramMap.get('id')}`});
@@ -35,6 +37,7 @@ export class SyncerComponent {
       this.socket = io(socketUrl);
     }
     this.socket.on('joined room', (event: string) => {
+      this.socket.emit('play video', 'a');
       if (event === activatedRoute.snapshot.paramMap.get('id')) {
         return;
       }
