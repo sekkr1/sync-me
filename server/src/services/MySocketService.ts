@@ -1,9 +1,21 @@
-import {Args, Input, Nsp, Socket, SocketService, SocketSession} from '@tsed/socketio';
+import {ErrorHandlerSocketMiddleware} from '@middlewares';
+import {
+  Args,
+  Input,
+  Nsp,
+  Socket,
+  SocketErr,
+  SocketMiddlewareError,
+  SocketService,
+  SocketSession,
+  SocketUseAfter
+} from '@tsed/socketio';
 import * as SocketIO from 'socket.io';
 import {RoomsStorage} from './RoomsStorage';
 import {YoutubeService} from './YoutubeService';
 
 @SocketService()
+@SocketUseAfter(ErrorHandlerSocketMiddleware)
 export class MySocketService {
   @Nsp nsp: SocketIO.Namespace;
 
@@ -59,7 +71,10 @@ export class MySocketService {
   }
 
   @Input('play video')
-  playVideo(@Args(0) id: number, @SocketSession session: SocketSession) {
+  playVideo(@Args(0) id: number, @SocketSession session: SocketSession, @SocketErr err: any, @SocketMiddlewareError() err2: any) {
+    if (id >= session.get('room').playlist.length || id < 0) {
+      return;
+    }
     session.get('room').selected = id;
     this.nsp.to(session.get('roomId')).emit('play video', id);
   }
@@ -76,6 +91,9 @@ export class MySocketService {
 
   @Input('remove video')
   removeVideo(@Args(0) id: number, @SocketSession session: SocketSession) {
+    if (id >= session.get('room').playlist.length || id < 0) {
+      return;
+    }
     if (id < session.get('room').selected) {
       session.get('room').selected--;
     } else if (id === session.get('room').selected) {
@@ -91,11 +109,17 @@ export class MySocketService {
 
   @Input('pause')
   pause(@Args(0) seconds: number, @Socket socket: SocketIO.Socket, @SocketSession session: SocketSession) {
+    if (seconds < 0) {
+      return;
+    }
     socket.to(session.get('roomId')).emit('pause', seconds);
   }
 
   @Input('play')
   play(@Args(0) seconds: number, @Socket socket: SocketIO.Socket, @SocketSession session: SocketSession) {
+    if (seconds < 0) {
+      return;
+    }
     socket.to(session.get('roomId')).emit('play', seconds);
   }
 }
