@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm --prefix server start",
-    "watch": "concurrently \"npm --prefix client start\" \"npm --prefix server run watch\""
+    "start": "concurrently \"npm --prefix client start\" \"npm --prefix server start\"",
+    "watch": "concurrently \"npm --prefix client watch\" \"npm --prefix server run watch\"",
+    "install": "concurrently \"npm --prefix client install\" \"npm --prefix server install\"",
+    "postInstall": "npm --prefix client build"
   },
   "author": "",
   "license": "ISC",

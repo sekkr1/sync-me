@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "http-server dist/sync-me -p $PORT -P http://localhost:3000",
+    "watch": "ng serve",
     "build": "ng build --aot --prod",
-    "watch": "npm start",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

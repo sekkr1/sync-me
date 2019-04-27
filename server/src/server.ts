@@ -8,7 +8,7 @@ import * as path from 'path';
 
 @ServerSettings({
   rootDir: path.resolve(__dirname),
-  port: process.env.PORT || 3000,
+  port: 3000,
   discordPrefix: '!',
   socketIO: {
     pingInterval: 7000,
