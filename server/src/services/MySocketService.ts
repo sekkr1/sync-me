@@ -71,7 +71,7 @@ export class MySocketService {
   }
 
   @Input('play video')
-  playVideo(@Args(0) id: number, @SocketSession session: SocketSession, @SocketErr err: any, @SocketMiddlewareError() err2: any) {
+  playVideo(@Args(0) id: number, @SocketSession session: SocketSession, @SocketErr err: any, @SocketMiddlewareError err2: any) {
     if (id >= session.get('room').playlist.length || id < 0) {
       return;
     }
